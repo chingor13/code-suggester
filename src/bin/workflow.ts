@@ -34,12 +34,12 @@ export async function main() {
     if (!process.env.ACCESS_TOKEN) {
       throw Error('The ACCESS_TOKEN should not be undefined');
     }
-    const octokit = new Octokit({auth: process.env.ACCESS_TOKEN});
+    const auth = process.env.ACCESS_TOKEN;
     let changes: Changes;
     switch (yargs.argv._[0]) {
       case CREATE_PR_COMMAND:
         changes = await git.getChanges(yargs.argv['git-dir'] as string);
-        await createPullRequest(octokit, changes, options, logger);
+        await createPullRequest(auth, changes, options, logger);
         break;
       default:
         // yargs should have caught this.

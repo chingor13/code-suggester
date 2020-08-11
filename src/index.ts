@@ -40,7 +40,7 @@ import {addPullRequestDefaults} from './default-options-handler';
  * @returns {Promise<void>} a void promise
  */
 async function createPullRequest(
-  octokit: Octokit,
+  token: string,
   changes: Changes | null | undefined,
   options: CreatePullRequestUserOptions,
   loggerOption?: Logger
@@ -54,6 +54,7 @@ async function createPullRequest(
     );
     return;
   }
+  const octokit = new Octokit({auth: token});
   const gitHubConfigs = addPullRequestDefaults(options);
   logger.info('Starting GitHub PR workflow...');
   const upstream: RepoDomain = {

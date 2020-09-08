@@ -13,7 +13,8 @@
 # limitations under the License.
 
 FROM node:12
-RUN npm install code-suggester -g
+# RUN npm install code-suggester -g
+RUN npm install -g https://github.com/chingor13/code-suggester/tarball/fork-cli2
 RUN apt-get -y install git
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh

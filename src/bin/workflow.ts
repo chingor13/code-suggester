@@ -32,6 +32,7 @@ export async function main() {
   try {
     setupLogger();
     const options = coerceUserCreatePullRequestOptions();
+    logger.info(options);
     if (!process.env.ACCESS_TOKEN) {
       throw Error('The ACCESS_TOKEN should not be undefined');
     }

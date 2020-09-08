@@ -16,6 +16,8 @@
 
 set -e
 
+echo ${INPUT_FORK}
+
 code-suggester $INPUT_COMMAND \
 --upstream-repo="$INPUT_UPSTREAM_REPO" \
 --upstream-owner="$INPUT_UPSTREAM_OWNER" \

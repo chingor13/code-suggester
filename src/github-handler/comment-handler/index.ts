@@ -17,7 +17,6 @@ import {Octokit} from '@octokit/rest';
 import {makeInlineSuggestions} from './make-review-handler';
 import {logger} from '../../logger';
 import {getRawSuggestionHunks} from './raw-patch-handler/raw-hunk-handler';
-import {generatePatches} from './raw-patch-handler/hunk-to-patch-handler';
 import {getPullRequestHunks} from './get-hunk-scope-handler/remote-patch-ranges-handler';
 
 interface PartitionedHunks {
@@ -79,7 +78,9 @@ function partitionSuggestedHunksByScope(
       suggestedHunks
     );
     validHunks.set(filename, validFileHunks);
-    invalidHunks.set(filename, invalidFileHunks);
+    if (invalidFileHunks.length > 0) {
+      invalidHunks.set(filename, invalidFileHunks);
+    }
   });
 
   return {validHunks, invalidHunks};
@@ -118,10 +119,11 @@ export async function reviewPullRequest(
       pullRequestHunks,
       allSuggestedHunks
     );
-    const filePatches = generatePatches(validHunks, diffContents);
+
+    // create pull request review
     const reviewNumber = await makeInlineSuggestions(
       octokit,
-      filePatches,
+      validHunks,
       invalidHunks,
       remote,
       pullNumber

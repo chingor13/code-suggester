@@ -27,9 +27,12 @@ export function parseHunks(diff: string): Hunk[] {
   return chunks.map(chunk => {
     let start = chunk.newStart + chunk.newLines;
     let oldEnd = 0;
+    let newContentLines: Array<string> = new Array();
     chunk.changes.forEach(change => {
       if (change.type === 'add') {
         start = Math.min(start, change.ln);
+        // strip off leading '+'
+        newContentLines.push(change.content.substring(1));
       }
       if (change.type === 'del') {
         start = Math.min(start, change.ln);
@@ -37,7 +40,7 @@ export function parseHunks(diff: string): Hunk[] {
       }
     });
     const newEnd = oldEnd + chunk.newLines - chunk.oldLines;
-    return {oldStart: start, oldEnd: oldEnd, newStart: start, newEnd: newEnd};
+    return {oldStart: start, oldEnd: oldEnd, newStart: start, newEnd: newEnd, newContent: newContentLines.join("\n")};
   });
 }
 

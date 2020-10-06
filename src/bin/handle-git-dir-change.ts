@@ -41,7 +41,7 @@ class InstallationError extends Error {
  */
 export function resolvePath(dir: string) {
   const absoluteDir = path.resolve(process.cwd(), dir);
-  return absoluteDir;
+  return absoluteDir  ;
 }
 
 /**
